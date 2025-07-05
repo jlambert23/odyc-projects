@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Example - Swipe Controls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            color: #e8f5e8;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+        }
+        
+        .step {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid #fcc419;
+        }
+        
+        .step h3 {
+            margin-top: 0;
+            color: #fcc419;
+        }
+        
+        .highlight {
+            background: rgba(255, 255, 0, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: #fcc419;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .back-link a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 How to Add Swipe Controls to Your Games</h1>
+        
+        <p>Well honey, integrating swipe controls into your existing games is easier than pie! Here's how to get your games workin' with touch swipes:</p>
+        
+        <div class="step">
+            <h3>📋 Step 1: Include the Script</h3>
+            <p>First things first, sugar - add the swipe controls script to your game HTML file:</p>
+            <div class="code-block">
+                <code>&lt;!-- Add this before your closing &lt;/body&gt; tag --&gt;
+&lt;script src="../swipe-controls.js"&gt;&lt;/script&gt;</code>
+            </div>
+            <p>That's it! The script will automatically initialize and start converting swipes to arrow keys.</p>
+        </div>
+        
+        <div class="step">
+            <h3>🎯 Step 2: Your Games Already Work!</h3>
+            <p>Since your games (like Pac-Man) already listen for arrow key events, they'll automatically work with swipes! The script translates:</p>
+            <ul>
+                <li>👆 <span class="highlight">Swipe Up</span> → Arrow Up Key</li>
+                <li>👇 <span class="highlight">Swipe Down</span> → Arrow Down Key</li>
+                <li>👈 <span class="highlight">Swipe Left</span> → Arrow Left Key</li>
+                <li>👉 <span class="highlight">Swipe Right</span> → Arrow Right Key</li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <h3>⚙️ Step 3: Customize (Optional)</h3>
+            <p>Want to get fancy? You can customize the swipe settings:</p>
+            <div class="code-block">
+                <code>&lt;script&gt;
+// Wait for the page to load, then customize
+document.addEventListener('DOMContentLoaded', () =&gt; {
+    // The global swipeControls instance is automatically created
+    // You can access it and modify settings if needed
+    
+    // Or create your own custom instance
+    const customSwipeControls = new SwipeToArrowKeys({
+        minSwipeDistance: 40,  // Shorter swipes needed
+        maxSwipeTime: 600,     // Longer time allowed for swipes
+        element: document.getElementById('gameArea') // Target specific element
+    });
+});
+&lt;/script&gt;</code>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>🔧 Step 4: Example Integration</h3>
+            <p>Here's how you'd add it to your Pac-Man game:</p>
+            <div class="code-block">
+                <code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;!-- Your existing head content --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Your existing game content --&gt;
+    
+    &lt;!-- Add the swipe controls script --&gt;
+    &lt;script src="../swipe-controls.js"&gt;&lt;/script&gt;
+    
+    &lt;!-- Your existing game script --&gt;
+    &lt;script&gt;
+        // Your game code here...
+        // It already listens for arrow keys, so swipes will work automatically!
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>🎮 Step 5: Test It Out!</h3>
+            <p>Open your game on a mobile device or tablet and start swiping! The swipes will be converted to arrow key presses that your game already understands.</p>
+            <p><strong>Pro tip:</strong> You can test on desktop too by clicking and dragging with your mouse!</p>
+        </div>
+        
+        <div class="step">
+            <h3>🛠️ Advanced Usage</h3>
+            <p>For more control, you can listen to the actual keyboard events that get fired:</p>
+            <div class="code-block">
+                <code>// Listen for the translated arrow key events
+document.addEventListener('keydown', (event) =&gt; {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        console.log(`Arrow key detected: ${event.key}`);
+        // Your game logic here
+    }
+});
+
+// Or disable the automatic swipe controls and handle manually
+if (window.swipeControls) {
+    window.swipeControls.destroy();
+}
+
+// Create custom handler
+const customControls = new SwipeToArrowKeys({
+    element: document.getElementById('my-game-area')
+});</code>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>💡 Tips & Tricks</h3>
+            <ul>
+                <li><strong>Sensitivity:</strong> Adjust <code>minSwipeDistance</code> for shorter/longer swipes</li>
+                <li><strong>Speed:</strong> Change <code>maxSwipeTime</code> for faster/slower swipe recognition</li>
+                <li><strong>Area:</strong> Set <code>element</code> to limit swipes to a specific game area</li>
+                <li><strong>Debug:</strong> Check the browser console to see swipe detection messages</li>
+            </ul>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to Projects</a>
+            <a href="../swipe-demo.html" style="margin-left: 20px;">Try the Demo →</a>
+        </div>
+    </div>
+</body>
+</html>

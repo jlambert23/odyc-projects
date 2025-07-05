@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Swipe Controls Demo - Test Your Swipes!</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+        margin-bottom: 30px;
+      }
+
+      .swipe-area {
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 3px dashed rgba(255, 255, 255, 0.5);
+        border-radius: 15px;
+        margin: 20px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+      }
+
+      .swipe-area:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .instructions {
+        margin: 20px 0;
+        font-size: 1.1em;
+        line-height: 1.6;
+      }
+
+      .log-container {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        min-height: 150px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .log-entry {
+        padding: 8px 12px;
+        margin: 5px 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        border-left: 4px solid #4caf50;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .clear-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .clear-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .arrow-display {
+        font-size: 3em;
+        margin: 20px 0;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .arrow {
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      .arrow.show {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px;
+          margin: 10px;
+        }
+
+        .swipe-area {
+          width: 250px;
+          height: 250px;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎮 Swipe Controls Demo</h1>
+      <p class="subtitle">
+        Test your swipe gestures and see them translate to arrow keys!
+      </p>
+
+      <div class="arrow-display">
+        <span id="arrow-indicator" class="arrow">👆</span>
+      </div>        <div class="swipe-area" id="swipeArea">
+          <div>
+            👆 Swipe in any direction 👇<br />
+            👈 or quick tap for Enter! 👉<br /><br />
+            <small>Desktop: drag or click!</small>
+          </div>
+        </div>
+
+      <div class="instructions">
+        <strong>How to test:</strong><br />
+        • On mobile/tablet: Use your finger to swipe or quick tap<br />
+        • On desktop: Click and drag with your mouse or quick click<br />
+        • Quick taps/clicks generate Enter key events<br />
+        • Watch the console for detailed logs<br />
+        • See the arrow indicator above change
+      </div>
+
+      <div class="log-container">
+        <h3>🔍 Activity Log:</h3>
+        <div id="logOutput">
+          <div class="log-entry">
+            Ready to detect swipes! Give it a try, sugar! 🎯
+          </div>
+        </div>
+      </div>
+
+      <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+
+      <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.8">
+        💡 This script automatically converts swipes to arrow key events that
+        your games can listen for!
+      </p>
+    </div>
+
+    <!-- Include our swipe controls script -->
+    <script src="swipe-controls.js"></script>
+
+    <script>
+      // Demo-specific JavaScript for logging and visual feedback
+      const logOutput = document.getElementById("logOutput");
+      const arrowIndicator = document.getElementById("arrow-indicator");
+
+      // Override console.log to also display in our log area
+      const originalConsoleLog = console.log;
+      console.log = function (...args) {
+        originalConsoleLog.apply(console, args);
+
+        // Add to our visual log
+        const message = args.join(" ");
+        if (
+          message.includes("swipe") ||
+          message.includes("Swipe") ||
+          message.includes("detected") ||
+          message.includes("mouse drag") ||
+          message.includes("Mouse drag")
+        ) {
+          addLogEntry(message);
+          showArrowIndicator(message);
+        }
+      };
+
+      function addLogEntry(message) {
+        const entry = document.createElement("div");
+        entry.className = "log-entry";
+        entry.textContent = new Date().toLocaleTimeString() + " - " + message;
+        logOutput.appendChild(entry);
+
+        // Auto-scroll to bottom
+        logOutput.scrollTop = logOutput.scrollHeight;
+
+        // Limit log entries to prevent memory issues
+        if (logOutput.children.length > 20) {
+          logOutput.removeChild(logOutput.firstChild);
+        }
+      }
+
+      function showArrowIndicator(message) {
+        let arrow = "🎯";
+
+        if (message.includes("Right")) arrow = "👉";
+        else if (message.includes("Left")) arrow = "👈";
+        else if (message.includes("Up")) arrow = "👆";
+        else if (message.includes("Down")) arrow = "👇";
+        else if (message.includes("Enter") || message.includes("tap")) arrow = "✨";
+
+        arrowIndicator.textContent = arrow;
+        arrowIndicator.classList.remove("show");
+
+        // Trigger reflow and add class for animation
+        setTimeout(() => {
+          arrowIndicator.classList.add("show");
+        }, 10);
+
+        // Remove after animation
+        setTimeout(() => {
+          arrowIndicator.classList.remove("show");
+        }, 1000);
+      }
+
+      function clearLog() {
+        logOutput.innerHTML =
+          '<div class="log-entry">Log cleared! Ready for more swipes! ✨</div>';
+      }
+
+      // Add keyboard event listeners to demonstrate the translation working
+      document.addEventListener("keydown", function (event) {
+        if (
+          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(
+            event.key
+          )
+        ) {
+          const direction = event.key.replace("Arrow", "");
+          addLogEntry(
+            `🎹 Arrow key detected: ${direction} (translated from swipe!)`
+          );
+        } else if (event.key === "Enter") {
+          addLogEntry(`🎹 Enter key detected! (translated from quick tap!)`);
+        }
+      });
+    </script>
+  </body>
+</html>
