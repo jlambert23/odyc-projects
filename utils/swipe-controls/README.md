@@ -105,7 +105,4 @@ const customControls = new SwipeToArrowKeys({
 - **Area:** Set `element` to limit swipes to a specific game area
 - **Debug:** Check the browser console to see swipe detection messages
 
-## Links
-
-- [Back to Projects](../index.html)
-- [Try the Demo](swipe-demo.html)
+[Try the Demo](https://jlambert23.github.io/odyc-projects/utils/swipe-controls/swipe-demo.html)
